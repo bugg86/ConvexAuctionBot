@@ -6,12 +6,12 @@ public class CaptainService : ICaptainInterface
 {
     public string DbDirectory = "../../../DB";
     
-    public List<KeyValuePair<string, decimal>> GetCaptains()
+    public Dictionary<string, decimal>? GetCaptains()
     {
         throw new NotImplementedException();
     }
     
-    public KeyValuePair<string, decimal> GetSingleCaptain(string name)
+    public KeyValuePair<string, decimal>? GetSingleCaptain(string name)
     {
         throw new NotImplementedException();
     }
@@ -21,7 +21,7 @@ public class CaptainService : ICaptainInterface
         throw new NotImplementedException();
     }
     
-    public List<KeyValuePair<string, decimal>>? AddCaptains(List<KeyValuePair<string, decimal>> captains)
+    public Dictionary<string, decimal>? AddCaptains(Dictionary<string, decimal> captains)
     {
         throw new NotImplementedException();
     }
