@@ -1,14 +1,12 @@
-﻿using ConvexAuctionBot.Models;
-
-namespace ConvexAuctionBot.Services.Interfaces;
+﻿namespace ConvexAuctionBot.Services.Interfaces;
 
 public interface ICaptainInterface
 {
-    public List<Captain> GetCaptains();
-    public Captain GetSingleCaptain(string name);
-    public Captain? AddCaptain(Captain captain);
-    public List<Captain>? AddCaptains(List<Captain> captains);
+    public List<KeyValuePair<string, decimal>> GetCaptains();
+    public KeyValuePair<string, decimal> GetSingleCaptain(string name);
+    public KeyValuePair<string, decimal>? AddCaptain(KeyValuePair<string, decimal> captain);
+    public List<KeyValuePair<string, decimal>>? AddCaptains(List<KeyValuePair<string, decimal>> captains);
     public void DeleteCaptainByName(string name);
-    public void DeleteCaptainByObject(Captain captain);
-    public Captain? UpdateCaptain(Captain captain);
+    public void DeleteCaptainByObject(KeyValuePair<string, decimal> captain);
+    public KeyValuePair<string, decimal>? UpdateCaptain(KeyValuePair<string, decimal> captain);
 }

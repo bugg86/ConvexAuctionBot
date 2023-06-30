@@ -1,5 +1,4 @@
-﻿using ConvexAuctionBot.Models;
-using ConvexAuctionBot.Services.Interfaces;
+﻿using ConvexAuctionBot.Services.Interfaces;
 
 namespace ConvexAuctionBot.Services;
 
@@ -7,22 +6,22 @@ public class CaptainService : ICaptainInterface
 {
     public string DbDirectory = "../../../DB";
     
-    public List<Captain> GetCaptains()
+    public List<KeyValuePair<string, decimal>> GetCaptains()
     {
         throw new NotImplementedException();
     }
     
-    public Captain GetSingleCaptain(string name)
+    public KeyValuePair<string, decimal> GetSingleCaptain(string name)
     {
         throw new NotImplementedException();
     }
     
-    public Captain? AddCaptain(Captain captain)
+    public KeyValuePair<string, decimal>? AddCaptain(KeyValuePair<string, decimal> captain)
     {
         throw new NotImplementedException();
     }
     
-    public List<Captain>? AddCaptains(List<Captain> captains)
+    public List<KeyValuePair<string, decimal>>? AddCaptains(List<KeyValuePair<string, decimal>> captains)
     {
         throw new NotImplementedException();
     }
@@ -32,12 +31,12 @@ public class CaptainService : ICaptainInterface
         throw new NotImplementedException();
     }
     
-    public void DeleteCaptainByObject(Captain captain)
+    public void DeleteCaptainByObject(KeyValuePair<string, decimal> captain)
     {
         throw new NotImplementedException();
     }
     
-    public Captain? UpdateCaptain(Captain captain)
+    public KeyValuePair<string, decimal>? UpdateCaptain(KeyValuePair<string, decimal> captain)
     {
         throw new NotImplementedException();
     }
