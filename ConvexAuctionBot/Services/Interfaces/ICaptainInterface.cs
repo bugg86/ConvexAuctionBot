@@ -2,11 +2,12 @@
 
 public interface ICaptainInterface
 {
-    public Dictionary<string, decimal>? GetCaptains();
-    public KeyValuePair<string, decimal>? GetSingleCaptain(string name);
-    public KeyValuePair<string, decimal>? AddCaptain(KeyValuePair<string, decimal> captain);
-    public Dictionary<string, decimal>? AddCaptains(Dictionary<string, decimal> captains);
+    public Dictionary<string, int>? GetCaptains();
+    public KeyValuePair<string, int>? GetSingleCaptain(string name);
+    public KeyValuePair<string, int>? AddCaptain(KeyValuePair<string, int> captain);
+    public Dictionary<string, int>? AddCaptains(Dictionary<string, int> captains);
     public void DeleteCaptainByName(string name);
-    public void DeleteCaptainByObject(KeyValuePair<string, decimal> captain);
-    public KeyValuePair<string, decimal>? UpdateCaptain(KeyValuePair<string, decimal> captain);
+    public void DeleteCaptainByObject(KeyValuePair<string, int> captain);
+    public KeyValuePair<string, int>? UpdateCaptain(KeyValuePair<string, int> captain);
+    public void GenerateDbFiles();
 }
