@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace ConvexAuctionBot.Services;
 
-public class CaptainService
+public class CaptainService : ICaptainService
 {
     private string captainFile = "../../../DB/captains.json";
     
@@ -168,7 +168,7 @@ public class CaptainService
         }
     }
     
-    public KeyValuePair<string, int>? UpdateCaptain(KeyValuePair<string, int> oldCaptain)
+    public KeyValuePair<string, int>? UpdateCaptain(KeyValuePair<string, int> newCaptain)
     {
         Dictionary<string, int>? captains = GetCaptains();
         
@@ -180,19 +180,19 @@ public class CaptainService
 
         try
         {
-            int oldBalance = captains[oldCaptain.Key];
-            captains[oldCaptain.Key] = oldCaptain.Value;
+            int oldBalance = captains[newCaptain.Key];
+            captains[newCaptain.Key] = newCaptain.Value;
             
-            if (!oldBalance.Equals(captains[oldCaptain.Key]))
+            if (!oldBalance.Equals(captains[newCaptain.Key]))
             {
                 File.WriteAllText(captainFile, JsonConvert.SerializeObject(captains, Formatting.Indented));
                 
-                Console.WriteLine(oldCaptain.Key + " successfully updated");
-                return new KeyValuePair<string, int>(oldCaptain.Key, captains[oldCaptain.Key]);
+                Console.WriteLine(newCaptain.Key + " successfully updated");
+                return new KeyValuePair<string, int>(newCaptain.Key, newCaptain.Value);
             }
             else
             {
-                Console.WriteLine(oldCaptain.Key + " failed to be updated");
+                Console.WriteLine(newCaptain.Key + " failed to be updated");
                 return null;
             }
         }
