@@ -1,6 +1,6 @@
 ﻿namespace ConvexAuctionBot.Services.Interfaces;
 
-public interface ICaptainInterface
+public interface ICaptainService
 {
     public Dictionary<string, int>? GetCaptains();
     public KeyValuePair<string, int>? GetSingleCaptain(string name);

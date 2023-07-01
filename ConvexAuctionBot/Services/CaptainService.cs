@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace ConvexAuctionBot.Services;
 
-public class CaptainService : ICaptainInterface
+public class CaptainService : ICaptainService
 {
     private string captainFile = "../../../DB/captains.json";
     
