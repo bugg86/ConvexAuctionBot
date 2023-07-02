@@ -1,4 +1,5 @@
-﻿using ConvexAuctionBot.Services;
+﻿using ConvexAuctionBot.Handlers;
+using ConvexAuctionBot.Services;
 using ConvexAuctionBot.Services.Interfaces;
 using Discord;
 using Discord.Interactions;
@@ -31,9 +32,8 @@ public class Program
 
             await _client.LoginAsync(TokenType.Bot, token);
             await _client.StartAsync();
-
-            // await serviceProvider.GetRequiredService<SelectionMenuHandler>().InitializeAsync();
-            // await serviceProvider.GetRequiredService<CommandHandler>().InitializeAsync();
+            
+            await serviceProvider.GetRequiredService<CommandHandler>().InitializeAsync();
         }
         
         var host = new HostBuilder()
@@ -51,9 +51,8 @@ public class Program
         services.AddSingleton(config);
         services.AddSingleton<DiscordSocketClient>();
         services.AddSingleton(x => new InteractionService(x.GetRequiredService<DiscordSocketClient>()));
-        // services.AddSingleton<CommandHandler>();
-        // services.AddSingleton<SelectionMenuHandler>();
-        
+        services.AddSingleton<CommandHandler>();
+
         services.AddScoped<IPlayerService, PlayerService>();
         services.AddScoped<ICaptainService, CaptainService>();
     }
