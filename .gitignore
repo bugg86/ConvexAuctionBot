@@ -18,6 +18,9 @@ obj/
 ConvexAuctionBot/DB/captains.json
 ConvexAuctionBot/DB/players.json
 
+#bot token
+token
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
