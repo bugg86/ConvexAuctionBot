@@ -44,14 +44,14 @@ public class CaptainService : ICaptainService
         }
     }
     
-    public KeyValuePair<string, int>? AddCaptain(KeyValuePair<string, int> captain)
+    public bool AddCaptain(KeyValuePair<string, int> captain)
     {
         Dictionary<string, int>? captains = GetCaptains();
 
         if (captains is null)
         {
             Console.WriteLine("captains.json does not exist");
-            return null;
+            return false;
         }
 
         try
@@ -63,29 +63,29 @@ public class CaptainService : ICaptainService
                 File.WriteAllText(captainFile, JsonConvert.SerializeObject(captains, Formatting.Indented));
 
                 Console.WriteLine(captain.Key + " successfully added");
-                return captain;
+                return true;
             }
             else
             {
                 Console.WriteLine(captain.Key + " failed to be added");
-                return null;
+                return false;
             }
         }
         catch (Exception e)
         {
             Console.WriteLine(e.Message);
-            return null;
+            return false;
         }
     }
     
-    public Dictionary<string, int>? AddCaptains(Dictionary<string, int> captainsToAdd)
+    public bool AddCaptains(Dictionary<string, int> captainsToAdd)
     {
         Dictionary<string, int>? captains = GetCaptains();
 
         if (captains is null)
         {
             Console.WriteLine("captains.json does not exist");
-            return null;
+            return false;
         }
 
         try
@@ -99,23 +99,23 @@ public class CaptainService : ICaptainService
             
             File.WriteAllText(captainFile, JsonConvert.SerializeObject(captains, Formatting.Indented));
             
-            return captainsToAdd; 
+            return true; 
         }
         catch (Exception e)
         {
             Console.WriteLine(e.Message);
-            return null;
+            return false;
         }
     }
     
-    public void DeleteCaptainByName(string name)
+    public bool DeleteCaptainByName(string name)
     {
         Dictionary<string, int>? captains = GetCaptains();
 
         if (captains is null)
         {
             Console.WriteLine("captains.json does not exist");
-            return;
+            return false;
         }
 
         try
@@ -125,27 +125,31 @@ public class CaptainService : ICaptainService
             if (!captains.TryGetValue(name, out int temp))
             {
                 File.WriteAllText(captainFile, JsonConvert.SerializeObject(captains, Formatting.Indented));
+                
                 Console.WriteLine(name + " successfully removed");
+                return true;
             }
             else
             {
                 Console.WriteLine(name + " failed to be removed");
+                return false;
             }
         }
         catch (Exception e)
         {
             Console.WriteLine(e.Message);
+            return false;
         }
     }
     
-    public void DeleteCaptainByObject(KeyValuePair<string, int> captain)    
+    public bool DeleteCaptainByObject(KeyValuePair<string, int> captain)    
     {
         Dictionary<string, int>? captains = GetCaptains();
 
         if (captains is null)
         {
             Console.WriteLine("captains.json does not exist");
-            return;
+            return false;
         }
 
         try
@@ -155,27 +159,31 @@ public class CaptainService : ICaptainService
             if (!captains.TryGetValue(captain.Key, out int temp))
             {
                 File.WriteAllText(captainFile, JsonConvert.SerializeObject(captains, Formatting.Indented));
+                
                 Console.WriteLine(captain.Key + " successfully removed");
+                return true;
             }
             else
             {
                 Console.WriteLine(captain.Key + " failed to be removed");
+                return false;
             }
         }
         catch (Exception e)
         {
             Console.WriteLine(e.Message);
+            return false;
         }
     }
     
-    public KeyValuePair<string, int>? UpdateCaptain(KeyValuePair<string, int> newCaptain)
+    public bool UpdateCaptain(KeyValuePair<string, int> newCaptain)
     {
         Dictionary<string, int>? captains = GetCaptains();
         
         if (captains is null)
         {
             Console.WriteLine("captains.json does not exist");
-            return null;
+            return false;
         }
 
         try
@@ -188,18 +196,18 @@ public class CaptainService : ICaptainService
                 File.WriteAllText(captainFile, JsonConvert.SerializeObject(captains, Formatting.Indented));
                 
                 Console.WriteLine(newCaptain.Key + " successfully updated");
-                return new KeyValuePair<string, int>(newCaptain.Key, newCaptain.Value);
+                return true;
             }
             else
             {
                 Console.WriteLine(newCaptain.Key + " failed to be updated");
-                return null;
+                return false;
             }
         }
         catch (Exception e)
         {
             Console.WriteLine(e.Message);
-            return null;
+            return false;
         }
     }
 
