@@ -20,6 +20,8 @@ public class CaptainModule : InteractionModuleBase<SocketInteractionContext>
     [SlashCommand("add", "add captain to database with default balance of 500")]
     public async Task AddCaptain(string name, int balance = 500)
     {
+        //Maybe check for perms here eventually
+        
         bool response = _captainService.AddCaptain(new KeyValuePair<string, int>(name, balance));
 
         if (response)
@@ -35,6 +37,8 @@ public class CaptainModule : InteractionModuleBase<SocketInteractionContext>
     [SlashCommand("delete", "remove captain from database")]
     public async Task DeleteCaptain(string name)
     {
+        //Maybe check for perms here eventually
+        
         bool response = _captainService.DeleteCaptainByName(name);
         
         if (response)
@@ -44,6 +48,23 @@ public class CaptainModule : InteractionModuleBase<SocketInteractionContext>
         else
         {
             await RespondAsync("Captain could not be removed.");
+        }
+    }
+
+    [SlashCommand("update", "update captain's balance")]
+    public async Task UpdateCaptain(string name, int balance)
+    {
+        //Maybe check for perms here eventually
+        
+        bool response = _captainService.UpdateCaptain(new KeyValuePair<string, int>(name, balance));
+        
+        if (response)
+        {
+            await RespondAsync("Captain was successfully updated.");
+        }
+        else
+        {
+            await RespondAsync("Captain could not be updated.");
         }
     }
 }
