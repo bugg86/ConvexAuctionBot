@@ -37,12 +37,34 @@ public class PlayerModule : InteractionModuleBase<SocketInteractionContext>
     [SlashCommand("delete", "remove player from database")]
     public async Task DeletePlayer(string name)
     {
+        //Maybe check for perms here eventually
         
+        bool response = _playerService.DeletePlayerByName(name);
+        
+        if (response)
+        {
+            await RespondAsync("Player was successfully removed.");
+        }
+        else
+        {
+            await RespondAsync("Player could not be removed.");
+        }
     }
     
     [SlashCommand("update", "update player's price")]
     public async Task UpdateCaptain(string name, int price)
     {
+        //Maybe check for perms here eventually
         
+        bool response = _playerService.UpdatePlayer(new KeyValuePair<string, int>(name, price));
+        
+        if (response)
+        {
+            await RespondAsync("Player was successfully updated.");
+        }
+        else
+        {
+            await RespondAsync("Player could not be updated.");
+        }
     }
 }
