@@ -43,15 +43,31 @@ public class PlayerService : IPlayerService
             return null;
         }
     }
+
+    public Dictionary<string, int>? GetRemainingPlayers()
+    {
+        try
+        {
+            Dictionary<string, int>? players =
+                JsonConvert.DeserializeObject<Dictionary<string, int>>(File.ReadAllText(playerFile));
+
+            return players?.Where(e => e.Value.Equals(0)).ToDictionary(e => e.Key, e => e.Value) ?? null;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            return null;
+        }
+    }
     
-    public KeyValuePair<string, int>? AddPlayer(KeyValuePair<string, int> player)
+    public bool AddPlayer(KeyValuePair<string, int> player)
     {
         Dictionary<string, int>? players = GetPlayers();
 
         if (players is null)
         {
             Console.WriteLine("players.json does not exist");
-            return null;
+            return false;
         }
 
         try
@@ -63,29 +79,29 @@ public class PlayerService : IPlayerService
                 File.WriteAllText(playerFile, JsonConvert.SerializeObject(players, Formatting.Indented));
 
                 Console.WriteLine(player.Key + " successfully added");
-                return player;
+                return true;
             }
             else
             {
                 Console.WriteLine(player.Key + " failed to be added");
-                return null;
+                return false;
             }
         }
         catch (Exception e)
         {
             Console.WriteLine(e.Message);
-            return null;
+            return false;
         }
     }
     
-    public Dictionary<string, int>? AddPlayers(Dictionary<string, int> playersToAdd)
+    public bool AddPlayers(Dictionary<string, int> playersToAdd)
     {
         Dictionary<string, int>? players = GetPlayers();
 
         if (players is null)
         {
             Console.WriteLine("players.json does not exist");
-            return null;
+            return false;
         }
 
         try
@@ -99,23 +115,23 @@ public class PlayerService : IPlayerService
             
             File.WriteAllText(playerFile, JsonConvert.SerializeObject(players, Formatting.Indented));
             
-            return playersToAdd; 
+            return true; 
         }
         catch (Exception e)
         {
             Console.WriteLine(e.Message);
-            return null;
+            return false;
         }
     }
     
-    public void DeletePlayerByName(string name)
+    public bool DeletePlayerByName(string name)
     {
         Dictionary<string, int>? players = GetPlayers();
 
         if (players is null)
         {
             Console.WriteLine("players.json does not exist");
-            return;
+            return false;
         }
 
         try
@@ -125,27 +141,31 @@ public class PlayerService : IPlayerService
             if (!players.TryGetValue(name, out int temp))
             {
                 File.WriteAllText(playerFile, JsonConvert.SerializeObject(players, Formatting.Indented));
+                
                 Console.WriteLine(name + " successfully removed");
+                return true;
             }
             else
             {
                 Console.WriteLine(name + " failed to be removed");
+                return false;
             }
         }
         catch (Exception e)
         {
             Console.WriteLine(e.Message);
+            return false;
         }
     }
     
-    public void DeletePlayerByObject(KeyValuePair<string, int> player)    
+    public bool DeletePlayerByObject(KeyValuePair<string, int> player)    
     {
         Dictionary<string, int>? players = GetPlayers();
 
         if (players is null)
         {
             Console.WriteLine("players.json does not exist");
-            return;
+            return false;
         }
 
         try
@@ -155,27 +175,31 @@ public class PlayerService : IPlayerService
             if (!players.TryGetValue(player.Key, out int temp))
             {
                 File.WriteAllText(playerFile, JsonConvert.SerializeObject(players, Formatting.Indented));
+                
                 Console.WriteLine(player.Key + " successfully removed");
+                return true;
             }
             else
             {
                 Console.WriteLine(player.Key + " failed to be removed");
+                return false;
             }
         }
         catch (Exception e)
         {
             Console.WriteLine(e.Message);
+            return false;
         }
     }
     
-    public KeyValuePair<string, int>? UpdatePlayer(KeyValuePair<string, int> newPlayer)
+    public bool UpdatePlayer(KeyValuePair<string, int> newPlayer)
     {
         Dictionary<string, int>? players = GetPlayers();
         
         if (players is null)
         {
             Console.WriteLine("players.json does not exist");
-            return null;
+            return false;
         }
 
         try
@@ -188,18 +212,18 @@ public class PlayerService : IPlayerService
                 File.WriteAllText(playerFile, JsonConvert.SerializeObject(players, Formatting.Indented));
                 
                 Console.WriteLine(newPlayer.Key + " successfully updated");
-                return new KeyValuePair<string, int>(newPlayer.Key, newPlayer.Value);
+                return true;
             }
             else
             {
                 Console.WriteLine(newPlayer.Key + " failed to be updated");
-                return null;
+                return false;
             }
         }
         catch (Exception e)
         {
             Console.WriteLine(e.Message);
-            return null;
+            return false;
         }
     }
 

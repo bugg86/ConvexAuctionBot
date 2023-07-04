@@ -4,10 +4,11 @@ public interface IPlayerService
 {
     public Dictionary<string, int>? GetPlayers();
     public KeyValuePair<string, int>? GetSinglePlayer(string name);
-    public KeyValuePair<string, int>? AddPlayer(KeyValuePair<string, int> player);
-    public Dictionary<string, int>? AddPlayers(Dictionary<string, int> players);
-    public void DeletePlayerByName(string name);
-    public void DeletePlayerByObject(KeyValuePair<string, int> player);
-    public KeyValuePair<string, int>? UpdatePlayer(KeyValuePair<string, int> player);
+    public Dictionary<string, int>? GetRemainingPlayers();
+    public bool AddPlayer(KeyValuePair<string, int> player);
+    public bool AddPlayers(Dictionary<string, int> players);
+    public bool DeletePlayerByName(string name);
+    public bool DeletePlayerByObject(KeyValuePair<string, int> player);
+    public bool UpdatePlayer(KeyValuePair<string, int> player);
     public void GenerateDbFiles();
 }
