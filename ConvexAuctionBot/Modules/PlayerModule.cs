@@ -83,7 +83,7 @@ public class PlayerModule : InteractionModuleBase<SocketInteractionContext>
         }
         else
         {
-            string response = players.Aggregate("Remaining players: \n", (current, player) => current + $"{player.Key} | {player.Value}\n");
+            string response = players.Aggregate("Remaining Players: \n", (current, player) => current + $"{player.Key} | {player.Value}\n");
 
             await RespondAsync(response);
         }

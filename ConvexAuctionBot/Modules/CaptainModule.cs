@@ -67,4 +67,25 @@ public class CaptainModule : InteractionModuleBase<SocketInteractionContext>
             await RespondAsync("Captain could not be updated.");
         }
     }
+
+    [SlashCommand("balances", "get captain's current balances")]
+    public async Task GetBalances()
+    {
+        Dictionary<string, int>? captains = _captainService.GetCaptains();
+
+        if (captains is null)
+        {
+            await RespondAsync("There are no captains.");
+        }
+        else if (captains.Count.Equals(0))
+        {
+            await RespondAsync("There are no captains.");
+        }
+        else
+        {
+            string response = captains.Aggregate("Captain Balances: \n", (current, captain) => current + $"{captain.Key} | {captain.Value}\n");
+
+            await RespondAsync(response);
+        }
+    }
 }
