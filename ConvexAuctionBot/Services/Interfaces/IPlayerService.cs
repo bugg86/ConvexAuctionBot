@@ -4,6 +4,7 @@ public interface IPlayerService
 {
     public Dictionary<string, int>? GetPlayers();
     public KeyValuePair<string, int>? GetSinglePlayer(string name);
+    public Dictionary<string, int>? GetRemainingPlayers();
     public bool AddPlayer(KeyValuePair<string, int> player);
     public bool AddPlayers(Dictionary<string, int> players);
     public bool DeletePlayerByName(string name);

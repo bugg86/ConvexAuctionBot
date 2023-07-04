@@ -43,6 +43,22 @@ public class PlayerService : IPlayerService
             return null;
         }
     }
+
+    public Dictionary<string, int>? GetRemainingPlayers()
+    {
+        try
+        {
+            Dictionary<string, int>? players =
+                JsonConvert.DeserializeObject<Dictionary<string, int>>(File.ReadAllText(playerFile));
+
+            return players?.Where(e => e.Value.Equals(0)).ToDictionary(e => e.Key, e => e.Value) ?? null;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            return null;
+        }
+    }
     
     public bool AddPlayer(KeyValuePair<string, int> player)
     {

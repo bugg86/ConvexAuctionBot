@@ -67,4 +67,25 @@ public class PlayerModule : InteractionModuleBase<SocketInteractionContext>
             await RespondAsync("Player could not be updated.");
         }
     }
+
+    [SlashCommand("remaining", "lists remaining players (players with price of 0)")]
+    public async Task RemainingPlayers()
+    {
+        Dictionary<string, int>? players = _playerService.GetRemainingPlayers();
+
+        if (players is null)
+        {
+            await RespondAsync("There are no remaining players.");
+        }
+        else if (players.Count.Equals(0))
+        {
+            await RespondAsync("There are no remaining players.");
+        }
+        else
+        {
+            string response = players.Aggregate("Remaining players: \n", (current, player) => current + $"{player.Key} | {player.Value}\n");
+
+            await RespondAsync(response);
+        }
+    }
 }
