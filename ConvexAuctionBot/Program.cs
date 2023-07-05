@@ -39,6 +39,24 @@ public class Program
         var host = new HostBuilder()
             .ConfigureServices(ConfigureDelegate);
 
+        if (!File.Exists("../../../token"))
+        {
+            Console.Write("Please enter your discord bot token: ");
+            string? token = Console.ReadLine();
+        
+            while (string.IsNullOrEmpty(token))
+            {
+                Console.Write("Please enter a valid discord bot token: ");
+                token = Console.ReadLine();
+            }
+        
+            FileStream fs = File.Create("../../../token");
+            
+            fs.Close();
+            
+            await File.WriteAllTextAsync("../../../token", token);
+        }
+
         await host.RunConsoleAsync();
     }
 
