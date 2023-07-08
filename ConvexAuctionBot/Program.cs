@@ -7,6 +7,8 @@ using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+namespace ConvexAuctionBot;
+
 public class Program
 {
     private DiscordSocketClient? _client;
@@ -18,6 +20,19 @@ public class Program
     {
         async void ConfigureDelegate(IServiceCollection services)
         {
+            string? token;
+            
+            if (!File.Exists("../../../token"))
+            {
+                Console.Write("Please enter your discord bot token: ");
+                token = Console.ReadLine();
+                await File.WriteAllTextAsync("../../../token", token);
+            }
+            else
+            {
+                token = await File.ReadAllTextAsync("../../../token");
+            }
+            
             ConfigureServices(services);
             
             var serviceProvider = services.BuildServiceProvider();
@@ -27,8 +42,6 @@ public class Program
             _client.Log += Log;
             _commands.Log += Log;
             _client.Ready += ReadyAsync;
-
-            var token = await File.ReadAllTextAsync("../../../token");
 
             await _client.LoginAsync(TokenType.Bot, token);
             await _client.StartAsync();
