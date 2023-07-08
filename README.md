@@ -2,7 +2,9 @@
 ### Docker Image
 `docker pull bugg86/convex-auction-bot`
 
-When doing this you will need to run a container using interactive mode so you can enter your token for use in the bot. You should only have to do this once.
+When doing this you will need to run a container using interactive mode so you can enter your token for use in the bot. You should only have to do this once. Command for running interactive docker container below:
+
+`docker run -it <IMAGE NAME>`
 
 ### Other Build Options
 You can build your own docker image using the Dockerfile included in the repository.
