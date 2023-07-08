@@ -4,14 +4,13 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["ConvexAuctionBot/ConvexAuctionBot.csproj", "ConvexAuctionBot/"]
-#COPY ["ConvexAuctionBot/token", "ConvexAuctionBot/"]
 RUN dotnet restore "ConvexAuctionBot/ConvexAuctionBot.csproj"
 COPY . .
 WORKDIR "/src/ConvexAuctionBot"
 RUN dotnet build "ConvexAuctionBot.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "ConvexAuctionBot.csproj" -c Release -o /app/publish
+RUN dotnet publish "ConvexAuctionBot.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app

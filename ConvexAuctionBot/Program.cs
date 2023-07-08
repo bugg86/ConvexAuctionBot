@@ -18,6 +18,19 @@ public class Program
     {
         async void ConfigureDelegate(IServiceCollection services)
         {
+            string? token;
+            
+            if (!File.Exists("../../../token"))
+            {
+                Console.Write("Please enter your discord bot token: ");
+                token = Console.ReadLine();
+                await File.WriteAllTextAsync("../../../token", token);
+            }
+            else
+            {
+                token = await File.ReadAllTextAsync("../../../token");
+            }
+            
             ConfigureServices(services);
             
             var serviceProvider = services.BuildServiceProvider();
@@ -28,8 +41,6 @@ public class Program
             _commands.Log += Log;
             _client.Ready += ReadyAsync;
 
-            var token = await File.ReadAllTextAsync("../../../token");
-
             await _client.LoginAsync(TokenType.Bot, token);
             await _client.StartAsync();
             
@@ -38,24 +49,6 @@ public class Program
         
         var host = new HostBuilder()
             .ConfigureServices(ConfigureDelegate);
-
-        if (!File.Exists("../../../token"))
-        {
-            Console.Write("Please enter your discord bot token: ");
-            string? token = Console.ReadLine();
-        
-            while (string.IsNullOrEmpty(token))
-            {
-                Console.Write("Please enter a valid discord bot token: ");
-                token = Console.ReadLine();
-            }
-        
-            FileStream fs = File.Create("../../../token");
-            
-            fs.Close();
-            
-            await File.WriteAllTextAsync("../../../token", token);
-        }
 
         await host.RunConsoleAsync();
     }
