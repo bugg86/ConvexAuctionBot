@@ -7,6 +7,8 @@ using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+namespace ConvexAuctionBot;
+
 public class Program
 {
     private DiscordSocketClient? _client;
