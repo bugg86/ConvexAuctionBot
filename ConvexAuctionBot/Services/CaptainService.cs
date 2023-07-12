@@ -211,6 +211,35 @@ public class CaptainService : ICaptainService
         }
     }
 
+    public bool ResetBalances()
+    {
+        Dictionary<string, int>? captains = GetCaptains();
+        
+        if (captains is null)
+        {
+            Console.WriteLine("captains.json does not exist");
+            return false;
+        }
+
+        try
+        {
+            foreach (var captain in captains)
+            {
+                captains[captain.Key] = 500;
+            }
+            
+            File.WriteAllText(captainFile, JsonConvert.SerializeObject(captains, Formatting.Indented));
+            
+            Console.WriteLine("Captain balances reset to 500.");
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            return false;
+        }
+    }
+
     public void GenerateDbFiles()
     {
         if (!File.Exists(captainFile))
