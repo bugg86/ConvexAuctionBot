@@ -26,11 +26,11 @@ public class PlayerModule : InteractionModuleBase<SocketInteractionContext>
 
         if (response)
         {
-            await RespondAsync("Captain was successfully added.");
+            await RespondAsync("Player was successfully added.");
         }
         else
         {
-            await RespondAsync("Captain could not be added.");
+            await RespondAsync("Player could not be added.");
         }
     }
 
@@ -52,7 +52,7 @@ public class PlayerModule : InteractionModuleBase<SocketInteractionContext>
     }
     
     [SlashCommand("update", "update player's price")]
-    public async Task UpdateCaptain(string name, int price)
+    public async Task UpdatePlayer(string name, int price)
     {
         //Maybe check for perms here eventually
         
@@ -65,6 +65,21 @@ public class PlayerModule : InteractionModuleBase<SocketInteractionContext>
         else
         {
             await RespondAsync("Player could not be updated.");
+        }
+    }
+
+    [SlashCommand("reset", "reset player's prices to 0")]
+    public async Task ResetPlayers()
+    {
+        bool response = _playerService.ResetSellPrices();
+        
+        if (response)
+        {
+            await RespondAsync("Player prices successfully set to 0.");
+        }
+        else
+        {
+            await RespondAsync("There was an issue resetting player prices.");
         }
     }
 
