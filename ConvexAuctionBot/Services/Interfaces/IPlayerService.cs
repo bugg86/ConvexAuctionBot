@@ -10,5 +10,6 @@ public interface IPlayerService
     public bool DeletePlayerByName(string name);
     public bool DeletePlayerByObject(KeyValuePair<string, int> player);
     public bool UpdatePlayer(KeyValuePair<string, int> player);
+    public bool ResetSellPrices();
     public void GenerateDbFiles();
 }

@@ -68,6 +68,20 @@ public class CaptainModule : InteractionModuleBase<SocketInteractionContext>
         }
     }
 
+    [SlashCommand("reset", "reset captains to balance of 500.")]
+    public async Task ResetCaptains()
+    {
+        bool response = _captainService.ResetBalances();
+        
+        if (response)
+        {
+            await RespondAsync("Captain balances successfully set to 500.");
+        }
+        else
+        {
+            await RespondAsync("There was an issue resetting captain balances.");
+        }
+    }
     [SlashCommand("balances", "get captain's current balances")]
     public async Task GetBalances()
     {
