@@ -5,7 +5,7 @@ namespace ConvexAuctionBot.Services;
 
 public class CaptainService : ICaptainService
 {
-    private string captainFile = "../../../DB/captains.json";
+    private readonly string captainFile = "../../../DB/captains.json";
     
     public Dictionary<string, int>? GetCaptains()
     {
@@ -240,7 +240,7 @@ public class CaptainService : ICaptainService
         }
     }
 
-    public void GenerateDbFiles()
+    public void GenerateDbFile()
     {
         if (!File.Exists(captainFile))
         {

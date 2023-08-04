@@ -45,6 +45,10 @@ public class Program
 
             await _client.LoginAsync(TokenType.Bot, token);
             await _client.StartAsync();
+
+            serviceProvider.GetRequiredService<ICaptainService>().GenerateDbFile();
+            serviceProvider.GetRequiredService<IPlayerService>().GenerateDbFile();
+            serviceProvider.GetRequiredService<IAuctionService>().GenerateDbFile();
             
             await serviceProvider.GetRequiredService<CommandHandler>().InitializeAsync();
         }
@@ -68,6 +72,7 @@ public class Program
 
         services.AddScoped<IPlayerService, PlayerService>();
         services.AddScoped<ICaptainService, CaptainService>();
+        services.AddScoped<IAuctionService, AuctionService>();
     }
     
     private async Task ReadyAsync()

@@ -12,4 +12,14 @@ public class AuctionModule : InteractionModuleBase<SocketInteractionContext>
     {
         _handler = handler;
     }
+
+    public async Task StartAuction(string player)
+    {
+        
+    }
+
+    public async Task StopAuction()
+    {
+        
+    }
 }
