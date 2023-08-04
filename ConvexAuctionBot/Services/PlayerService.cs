@@ -5,7 +5,7 @@ namespace ConvexAuctionBot.Services;
 
 public class PlayerService : IPlayerService
 {
-    private string playerFile = "../../../DB/players.json";
+    private readonly string playerFile = "../../../DB/players.json";
     
     public Dictionary<string, int>? GetPlayers()
     {
@@ -256,7 +256,7 @@ public class PlayerService : IPlayerService
         }
     }
 
-    public void GenerateDbFiles()
+    public void GenerateDbFile()
     {
         if (!File.Exists(playerFile))
         {

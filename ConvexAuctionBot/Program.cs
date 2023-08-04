@@ -59,7 +59,9 @@ public class Program
     {
         DiscordSocketConfig config = new()
         {
-            UseInteractionSnowflakeDate = false
+            UseInteractionSnowflakeDate = false,
+            GatewayIntents = GatewayIntents.AllUnprivileged | GatewayIntents.MessageContent,
+            AlwaysDownloadUsers = true
         };
         services.AddSingleton(config);
         services.AddSingleton<DiscordSocketClient>();
@@ -68,6 +70,7 @@ public class Program
 
         services.AddScoped<IPlayerService, PlayerService>();
         services.AddScoped<ICaptainService, CaptainService>();
+        services.AddScoped<IAuctionService, AuctionService>();
     }
     
     private async Task ReadyAsync()
