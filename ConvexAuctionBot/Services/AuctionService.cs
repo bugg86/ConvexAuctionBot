@@ -97,6 +97,51 @@ public class AuctionService : IAuctionService
         }
     }
 
+    public string GetHighestBid()
+    {
+        try
+        {
+            Dictionary<string, string>? auctionData =
+                JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(auctionFile));
+
+            if (auctionData?.TryGetValue("highestBid", out string? temp) ?? false)
+            {
+                return temp;
+            }
+
+            return "";
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            return "";
+        }
+    }
+
+    public bool SetHighestBid(string captain)
+    {
+        try
+        {
+            Dictionary<string, string>? auctionData =
+                JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(auctionFile));
+
+            if (auctionData is null)
+            {
+                Console.Write("auctionData.json does not exist.");
+                return false;
+            }
+            
+            auctionData["highestBid"] = captain;
+            File.WriteAllText(auctionFile, JsonConvert.SerializeObject(auctionData, Formatting.Indented));
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.Write(e.Message);
+            return false;
+        }
+    }
+
     public void GenerateDbFile()
     {
         if (!File.Exists(auctionFile))
