@@ -45,10 +45,6 @@ public class Program
 
             await _client.LoginAsync(TokenType.Bot, token);
             await _client.StartAsync();
-
-            serviceProvider.GetRequiredService<ICaptainService>().GenerateDbFile();
-            serviceProvider.GetRequiredService<IPlayerService>().GenerateDbFile();
-            serviceProvider.GetRequiredService<IAuctionService>().GenerateDbFile();
             
             await serviceProvider.GetRequiredService<CommandHandler>().InitializeAsync();
         }
@@ -63,7 +59,9 @@ public class Program
     {
         DiscordSocketConfig config = new()
         {
-            UseInteractionSnowflakeDate = false
+            UseInteractionSnowflakeDate = false,
+            GatewayIntents = GatewayIntents.AllUnprivileged | GatewayIntents.MessageContent,
+            AlwaysDownloadUsers = true
         };
         services.AddSingleton(config);
         services.AddSingleton<DiscordSocketClient>();
