@@ -7,6 +7,8 @@ public interface IAuctionService
     public string GetCurrentPlayer();
     public bool SetCurrentPlayer(string player);
     public string GetHighestBid();
-    public bool SetHighestBid(string captain);
+    public bool SetHighestBid(string bid);
+    public string GetHighestBidder();
+    public bool SetHighestBidder(string captain);
     public void GenerateDbFile();
 }

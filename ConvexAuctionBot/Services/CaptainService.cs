@@ -210,6 +210,41 @@ public class CaptainService : ICaptainService
             return false;
         }
     }
+    
+    public bool UpdateCaptain(string captain, int balance)
+    {
+        Dictionary<string, int>? captains = GetCaptains();
+        
+        if (captains is null)
+        {
+            Console.WriteLine("captains.json does not exist");
+            return false;
+        }
+
+        try
+        {
+            int oldBalance = captains[captain];
+            captains[captain] = balance;
+            
+            if (!oldBalance.Equals(captains[captain]))
+            {
+                File.WriteAllText(captainFile, JsonConvert.SerializeObject(captains, Formatting.Indented));
+                
+                Console.WriteLine(captain + " successfully updated");
+                return true;
+            }
+            else
+            {
+                Console.WriteLine(captain + " failed to be updated");
+                return false;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            return false;
+        }
+    }
 
     public bool ResetBalances()
     {
