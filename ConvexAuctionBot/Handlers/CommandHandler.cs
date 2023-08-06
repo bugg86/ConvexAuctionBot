@@ -46,57 +46,60 @@ public class CommandHandler
     private async Task HandleMessage(SocketMessage arg)
     {
         // there has to be a better way to do this but i can't be asked finding a better way
-        if (arg.Channel.Id == auctionChannelId)
+        if (arg.Channel.Id != auctionChannelId)
         {
-            if (arg.Author.IsBot)
-            {
-                return;
-            }
-            
-            string auctionStatus = _services.GetRequiredService<IAuctionService>().GetStatus() ?? "";
-            
-            if (!auctionStatus.Equals("true"))
-            {
-                return;
-            }
-
-            if (!arg.Content.Contains("bid"))
-            {
-                return;
-            }
-            
-            int bid = int.Parse(Regex.Match(arg.Content, @"\d+").Value);
-            
-            if (bid == 475)
-            {
-                return;
-            }
-            //25 is the bid increment
-            if (bid % 25 != 0)
-            {
-                return;
-            }
-
-            KeyValuePair<string, int> captain = _captainService.GetSingleCaptain(arg.Author.Username)!.Value;
-            if (captain.Value - bid < 0)
-            {
-                return;
-            }
-                
-            string currentPlayer = _auctionService.GetCurrentPlayer();
-            int currentPrice = _playerService.GetSinglePlayer(currentPlayer).Value.Value;
-
-            if (bid <= currentPrice)
-            {
-                return;
-            }
-            
-            _playerService.UpdatePlayer(new KeyValuePair<string, int>(currentPlayer, bid));
-
-            _captainService.UpdateCaptain(new KeyValuePair<string, int>(captain.Key, captain.Value - bid));
-            
-            await arg.Channel.SendMessageAsync("New highest bid is: **" + bid + "**");
+            return;
         }
+
+        if (arg.Author.IsBot)
+        {
+            return;
+        }
+        
+        Console.WriteLine("message is being processed");
+        
+        string auctionStatus = _services.GetRequiredService<IAuctionService>().GetStatus() ?? "";
+            
+        if (!auctionStatus.Equals("true"))
+        {
+            return;
+        }
+
+        if (!arg.Content.Contains("bid"))
+        {
+            return;
+        }
+            
+        int bid = int.Parse(Regex.Match(arg.Content, @"\d+").Value);
+            
+        if (bid == 475)
+        {
+            return;
+        }
+        //25 is the bid increment
+        if (bid % 25 != 0)
+        {
+            return;
+        }
+
+        KeyValuePair<string, int> captain = _captainService.GetSingleCaptain(arg.Author.Username)!.Value;
+        if (captain.Value - bid < 0)
+        {
+            return;
+        }
+                
+        string currentPlayer = _auctionService.GetCurrentPlayer();
+        int? currentPrice = _playerService.GetSinglePlayer(currentPlayer)?.Value ?? 0;
+
+        if (bid <= currentPrice)
+        {
+            return;
+        }
+        
+        _auctionService.SetHighestBid(bid.ToString());
+        _auctionService.SetHighestBidder(captain.Key);
+            
+        await arg.Channel.SendMessageAsync($"New highest bid is **{captain.Key}**: $**{bid}**");
     }
     
     private async Task HandleInteraction(SocketInteraction arg)

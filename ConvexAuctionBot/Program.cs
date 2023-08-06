@@ -42,6 +42,7 @@ public class Program
             _client.Log += Log;
             _commands.Log += Log;
             _client.Ready += ReadyAsync;
+            // _client.MessageReceived += HandleMessage(services);
 
             await _client.LoginAsync(TokenType.Bot, token);
             await _client.StartAsync();
@@ -82,4 +83,59 @@ public class Program
         Console.WriteLine(msg.ToString());
         return Task.CompletedTask;
     }
+    // private Task HandleMessage(SocketMessage arg, IServiceProvider _services)
+    // {
+    //     // there has to be a better way to do this but i can't be asked finding a better way
+    //     if (arg.Channel.Id == auctionChannelId)
+    //     {
+    //         if (arg.Author.IsBot)
+    //         {
+    //             
+    //         }
+    //         
+    //         string auctionStatus = _services.GetRequiredService<IAuctionService>().GetStatus() ?? "";
+    //         
+    //         if (!auctionStatus.Equals("true"))
+    //         {
+    //             return;
+    //         }
+    //
+    //         if (!arg.Content.Contains("bid"))
+    //         {
+    //             return;
+    //         }
+    //         
+    //         int bid = int.Parse(Regex.Match(arg.Content, @"\d+").Value);
+    //         
+    //         if (bid == 475)
+    //         {
+    //             return;
+    //         }
+    //         //25 is the bid increment
+    //         if (bid % 25 != 0)
+    //         {
+    //             return;
+    //         }
+    //
+    //         KeyValuePair<string, int> captain = _captainService.GetSingleCaptain(arg.Author.Username)!.Value;
+    //         if (captain.Value - bid < 0)
+    //         {
+    //             return;
+    //         }
+    //             
+    //         string currentPlayer = _auctionService.GetCurrentPlayer();
+    //         int currentPrice = _playerService.GetSinglePlayer(currentPlayer).Value.Value;
+    //
+    //         if (bid <= currentPrice)
+    //         {
+    //             return;
+    //         }
+    //         
+    //         _playerService.UpdatePlayer(new KeyValuePair<string, int>(currentPlayer, bid));
+    //
+    //         _captainService.UpdateCaptain(new KeyValuePair<string, int>(captain.Key, captain.Value - bid));
+    //         
+    //         await arg.Channel.SendMessageAsync("New highest bid is: **" + bid + "**");
+    //     }
+    // }
 }

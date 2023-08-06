@@ -227,6 +227,41 @@ public class PlayerService : IPlayerService
         }
     }
 
+    public bool UpdatePlayer(string player, int price)
+    {
+        Dictionary<string, int>? players = GetPlayers();
+        
+        if (players is null)
+        {
+            Console.WriteLine("players.json does not exist");
+            return false;
+        }
+
+        try
+        {
+            int oldPrice = players[player];
+            players[player] = price;
+                
+            if (!oldPrice.Equals(players[player]))
+            {
+                File.WriteAllText(playerFile, JsonConvert.SerializeObject(players, Formatting.Indented));
+                
+                Console.WriteLine(player + " successfully updated");
+                return true;
+            }
+            else
+            {
+                Console.WriteLine(player + " failed to be updated");
+                return false;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            return false;
+        }
+    }
+
     public bool ResetSellPrices()
     {
         Dictionary<string, int>? players = GetPlayers();

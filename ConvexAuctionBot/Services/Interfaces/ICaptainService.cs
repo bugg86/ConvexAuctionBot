@@ -9,6 +9,7 @@ public interface ICaptainService
     public bool DeleteCaptainByName(string name);
     public bool DeleteCaptainByObject(KeyValuePair<string, int> captain);
     public bool UpdateCaptain(KeyValuePair<string, int> captain);
+    public bool UpdateCaptain(string captain, int balance);
     public bool ResetBalances();
     public void GenerateDbFile();
 }
