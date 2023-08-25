@@ -98,6 +98,7 @@ public class CommandHandler
         
         _auctionService.SetHighestBid(bid.ToString());
         _auctionService.SetHighestBidder(captain.Key);
+        _auctionService.SetSeconds(0);
             
         await arg.Channel.SendMessageAsync($"New highest bid is **{captain.Key}**: $**{bid}**");
     }
