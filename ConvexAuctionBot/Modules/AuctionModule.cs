@@ -15,6 +15,7 @@ public class AuctionModule : InteractionModuleBase<SocketInteractionContext>
     private readonly ICaptainService _captainService;
     private readonly IPlayerService _playerService;
     private Timer _timer;
+    public int timerTracker = 0;
 
     public AuctionModule(CommandHandler handler, IAuctionService auctionService, ICaptainService captainService, IPlayerService playerService)
     {
@@ -33,8 +34,8 @@ public class AuctionModule : InteractionModuleBase<SocketInteractionContext>
 
         await RespondAsync("Starting auction for: **" + player + "**");
 
-        _timer = new Timer(10000);
-        _timer.AutoReset = false;
+        _timer = new Timer(1000);
+        _timer.AutoReset = true;
         _timer.Elapsed += OnTimedEvent;
         _timer.Enabled = true;
     }
@@ -49,17 +50,35 @@ public class AuctionModule : InteractionModuleBase<SocketInteractionContext>
 
     private void OnTimedEvent(object? source, ElapsedEventArgs e)
     {
-        Console.WriteLine("timer is done");
-        string highestBid = _auctionService.GetHighestBid();
-        string highestBidder = _auctionService.GetHighestBidder();
-        string player = _auctionService.GetCurrentPlayer();
+        int secondsPassed = _auctionService.GetSeconds();
+        if (secondsPassed != timerTracker)
+        {
+            timerTracker = 0;
+            Console.WriteLine("timer was reset, fixing timerTracker");
+        }
+        else
+        {
+            Console.WriteLine("adding one second to timer");
+            timerTracker++;
+            _auctionService.AddOneSecond();
+        }
+        Console.WriteLine(timerTracker - 1 + " | " + secondsPassed);
 
-        _playerService.UpdatePlayer(new KeyValuePair<string, int>(player, int.Parse(highestBid)));
-        _captainService.UpdateCaptain(new KeyValuePair<string, int>());
+        if (timerTracker - 1 == 10 && secondsPassed == 10)
+        {
+            Console.WriteLine("timer is done");
+            int highestBid = int.Parse(_auctionService.GetHighestBid());
+            string highestBidder = _auctionService.GetHighestBidder();
+            string player = _auctionService.GetCurrentPlayer();
+            int captainBalance = _captainService.GetSingleCaptain(highestBidder)!.Value.Value;
+
+            _playerService.UpdatePlayer(new KeyValuePair<string, int>(player, highestBid));
+            _captainService.UpdateCaptain(new KeyValuePair<string, int>(highestBidder, captainBalance - highestBid));
         
-        Context.Channel.SendMessageAsync($"**{player}** was bought for $**{highestBid}** by **{highestBidder}**!");
+            Context.Channel.SendMessageAsync($"**{player}** was bought for $**{highestBid}** by **{highestBidder}**!");
 
-        ResetAuction();
+            ResetAuction();
+        }
     }
 
     private void ResetAuction()
@@ -67,6 +86,8 @@ public class AuctionModule : InteractionModuleBase<SocketInteractionContext>
         _auctionService.SetStatus("false");
         _auctionService.SetCurrentPlayer("");
         _auctionService.SetHighestBid("");
+        _auctionService.SetSeconds(0);
         _auctionService.SetHighestBidder("");
+        _timer.Enabled = false;
     }
 }

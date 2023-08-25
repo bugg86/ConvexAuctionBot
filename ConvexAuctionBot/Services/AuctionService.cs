@@ -187,6 +187,75 @@ public class AuctionService : IAuctionService
         }
     }
 
+    public int GetSeconds()
+    {
+        try
+        {
+            Dictionary<string, string>? auctionData =
+                JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(auctionFile));
+
+            if (auctionData?.TryGetValue("seconds", out string? temp) ?? false)
+            {
+                return int.Parse(temp);
+            }
+
+            return -1;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            return -1;
+        }
+    }
+
+    public bool SetSeconds(int seconds)
+    {
+        try
+        {
+            Dictionary<string, string>? auctionData =
+                JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(auctionFile));
+
+            if (auctionData is null)
+            {
+                Console.Write("auctionData.json does not exist.");
+                return false;
+            }
+            
+            auctionData["seconds"] = seconds.ToString();
+            File.WriteAllText(auctionFile, JsonConvert.SerializeObject(auctionData, Formatting.Indented));
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.Write(e.Message);
+            return false;
+        }
+    }
+    
+    public bool AddOneSecond()
+    {
+        try
+        {
+            Dictionary<string, string>? auctionData =
+                JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(auctionFile));
+
+            if (auctionData is null)
+            {
+                Console.Write("auctionData.json does not exist.");
+                return false;
+            }
+            
+            auctionData["seconds"] = (int.Parse(auctionData["seconds"]) + 1).ToString();
+            File.WriteAllText(auctionFile, JsonConvert.SerializeObject(auctionData, Formatting.Indented));
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.Write(e.Message);
+            return false;
+        }
+    }
+
     public void GenerateDbFile()
     {
         if (!File.Exists(auctionFile))

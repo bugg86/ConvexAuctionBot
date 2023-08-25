@@ -19,6 +19,9 @@ ConvexAuctionBot/DB/captains.json
 ConvexAuctionBot/DB/players.json
 ConvexAuctionBot/DB/auctionData.json
 
+local.settings.json
+Migrations/
+
 #bot token
 token
 
