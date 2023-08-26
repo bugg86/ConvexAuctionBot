@@ -1,6 +1,7 @@
 ﻿using System.Timers;
 using ConvexAuctionBot.Handlers;
 using ConvexAuctionBot.Services.Interfaces;
+using Discord;
 using Discord.Interactions;
 using Timer = System.Timers.Timer;
 
@@ -15,7 +16,7 @@ public class AuctionModule : InteractionModuleBase<SocketInteractionContext>
     private readonly ICaptainService _captainService;
     private readonly IPlayerService _playerService;
     private Timer _timer;
-    public int timerTracker = 0;
+    private int timerTracker = 0;
 
     public AuctionModule(CommandHandler handler, IAuctionService auctionService, ICaptainService captainService, IPlayerService playerService)
     {
@@ -32,7 +33,11 @@ public class AuctionModule : InteractionModuleBase<SocketInteractionContext>
 
         _auctionService.SetCurrentPlayer(player);
 
-        await RespondAsync("Starting auction for: **" + player + "**");
+        await RespondAsync(embed: new EmbedBuilder()
+        {
+            Title = "Starting auction for: **" + player + "**",
+            Color = Color.Green
+        }.Build());
 
         _timer = new Timer(1000);
         _timer.AutoReset = true;
@@ -43,9 +48,12 @@ public class AuctionModule : InteractionModuleBase<SocketInteractionContext>
     [SlashCommand("stop", "manually stop the auction")]
     public async Task StopAuction()
     {
+        await RespondAsync(embed: new EmbedBuilder()
+        {
+            Title = "Auction has been stopped.",
+            Color = Color.Red
+        }.Build());
         ResetAuction();
-
-        await RespondAsync("Auction has been stopped.");
     }
 
     private void OnTimedEvent(object? source, ElapsedEventArgs e)
@@ -74,9 +82,13 @@ public class AuctionModule : InteractionModuleBase<SocketInteractionContext>
 
             _playerService.UpdatePlayer(new KeyValuePair<string, int>(player, highestBid));
             _captainService.UpdateCaptain(new KeyValuePair<string, int>(highestBidder, captainBalance - highestBid));
-        
-            Context.Channel.SendMessageAsync($"**{player}** was bought for $**{highestBid}** by **{highestBidder}**!");
 
+            Context.Channel.SendMessageAsync(embed: new EmbedBuilder()
+            {
+                Title = $"**{player}** was bought for $**{highestBid}** by **{highestBidder}**!",
+                Color = Color.Green
+            }.Build());
+            // Context.Channel.SendMessageAsync($"**{player}** was bought for $**{highestBid}** by **{highestBidder}**!");
             ResetAuction();
         }
     }
