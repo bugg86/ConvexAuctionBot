@@ -99,8 +99,14 @@ public class CommandHandler
         _auctionService.SetHighestBid(bid.ToString());
         _auctionService.SetHighestBidder(captain.Key);
         _auctionService.SetSeconds(0);
-            
-        await arg.Channel.SendMessageAsync($"New highest bid is **{captain.Key}**: $**{bid}**");
+
+        await arg.Channel.SendMessageAsync(embed: new EmbedBuilder()
+        {
+            Title = "New highest bid!",
+            Description = $"New highest bid is **{captain.Key}**: $**{bid}**",
+            Color = Color.Orange
+        }.Build());
+        // await arg.Channel.SendMessageAsync($"New highest bid is **{captain.Key}**: $**{bid}**");
     }
     
     private async Task HandleInteraction(SocketInteraction arg)
