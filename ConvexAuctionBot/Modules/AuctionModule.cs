@@ -1,4 +1,5 @@
 ﻿using System.Timers;
+using System.Xml.Schema;
 using ConvexAuctionBot.Handlers;
 using ConvexAuctionBot.Services.Interfaces;
 using Discord;
@@ -29,6 +30,11 @@ public class AuctionModule : InteractionModuleBase<SocketInteractionContext>
     [SlashCommand("start", "start the auction for a player")]
     public async Task StartAuction(string player)
     {
+        if (Context.User.Id != 119581243342979074 && Context.User.Id != 318813777619320832 && Context.User.Id != 402263124809351178 && Context.User.Id != 336928732277243905)
+        {
+            await RespondAsync("you can't use that command stop it!");
+            return;
+        }
         _auctionService.SetStatus("true");
 
         _auctionService.SetCurrentPlayer(player);

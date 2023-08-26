@@ -18,7 +18,7 @@ public class CaptainModule : InteractionModuleBase<SocketInteractionContext>
     }
 
     [SlashCommand("add", "add captain to database with default balance of 500")]
-    public async Task AddCaptain(string name, int balance = 500)
+    public async Task AddCaptain(string name, int balance = 10000)
     {
         //Maybe check for perms here eventually
         

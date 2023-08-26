@@ -24,7 +24,7 @@ public class CommandHandler
         _client = client;
         _commands = commands;
         _services = services;
-        auctionChannelId = 1124063514001154098;
+        auctionChannelId = 1127869010797674670;
         //I'm pretty sure this is not how I'm supposed to do this but i dont care
         _auctionService = _services.GetRequiredService<IAuctionService>();
         _captainService = _services.GetRequiredService<ICaptainService>();
@@ -72,12 +72,12 @@ public class CommandHandler
             
         int bid = int.Parse(Regex.Match(arg.Content, @"\d+").Value);
             
-        if (bid == 475)
+        if (bid > 8000)
         {
             return;
         }
         //25 is the bid increment
-        if (bid % 25 != 0)
+        if (bid % 100 != 0)
         {
             return;
         }

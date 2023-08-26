@@ -260,12 +260,12 @@ public class CaptainService : ICaptainService
         {
             foreach (var captain in captains)
             {
-                captains[captain.Key] = 500;
+                captains[captain.Key] = 10000;
             }
             
             File.WriteAllText(captainFile, JsonConvert.SerializeObject(captains, Formatting.Indented));
             
-            Console.WriteLine("Captain balances reset to 500.");
+            Console.WriteLine("Captain balances reset to 10000.");
             return true;
         }
         catch (Exception e)
