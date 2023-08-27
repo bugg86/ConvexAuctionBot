@@ -103,7 +103,7 @@ public class AuctionModule : InteractionModuleBase<SocketInteractionContext>
     {
         _auctionService.SetStatus("false");
         _auctionService.SetCurrentPlayer("");
-        _auctionService.SetHighestBid("");
+        _auctionService.SetHighestBid("0");
         _auctionService.SetSeconds(0);
         _auctionService.SetHighestBidder("");
         _timer.Enabled = false;

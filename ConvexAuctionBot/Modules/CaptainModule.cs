@@ -75,7 +75,7 @@ public class CaptainModule : InteractionModuleBase<SocketInteractionContext>
         
         if (response)
         {
-            await RespondAsync("Captain balances successfully set to 500.");
+            await RespondAsync("Captain balances successfully set to 10000.");
         }
         else
         {
