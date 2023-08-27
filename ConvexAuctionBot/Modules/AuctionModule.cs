@@ -59,6 +59,19 @@ public class AuctionModule : InteractionModuleBase<SocketInteractionContext>
     private void OnTimedEvent(object? source, ElapsedEventArgs e)
     {
         int secondsPassed = _auctionService.GetSeconds();
+
+        if (secondsPassed >= 12)
+        {
+            Context.Channel.SendMessageAsync(embed: new EmbedBuilder()
+            {
+                Title = $"Timer broke, current player was not bought, they will be re-spun at the end of the auction.",
+                Color = Color.Red
+            }.Build());
+            
+            ResetAuction();
+            return;
+        }
+        
         if (secondsPassed != timerTracker)
         {
             timerTracker = 0;
@@ -78,6 +91,19 @@ public class AuctionModule : InteractionModuleBase<SocketInteractionContext>
             int highestBid = int.Parse(_auctionService.GetHighestBid());
             string highestBidder = _auctionService.GetHighestBidder();
             string player = _auctionService.GetCurrentPlayer();
+
+            if (string.IsNullOrWhiteSpace(highestBidder))
+            {
+                Context.Channel.SendMessageAsync(embed: new EmbedBuilder()
+                {
+                    Title = $"**{player}** was not bought, they will be re-spun at the end of the auction.",
+                    Color = Color.Red
+                }.Build());
+                
+                ResetAuction();
+                return;
+            }
+            
             int captainBalance = _captainService.GetSingleCaptain(highestBidder)!.Value.Value;
 
             _playerService.UpdatePlayer(new KeyValuePair<string, int>(player, highestBid));
@@ -88,7 +114,7 @@ public class AuctionModule : InteractionModuleBase<SocketInteractionContext>
                 Title = $"**{player}** was bought for $**{highestBid}** by **{highestBidder}**!",
                 Color = Color.Green
             }.Build());
-            // Context.Channel.SendMessageAsync($"**{player}** was bought for $**{highestBid}** by **{highestBidder}**!");
+            
             ResetAuction();
         }
     }
@@ -97,7 +123,7 @@ public class AuctionModule : InteractionModuleBase<SocketInteractionContext>
     {
         _auctionService.SetStatus("false");
         _auctionService.SetCurrentPlayer("");
-        _auctionService.SetHighestBid("");
+        _auctionService.SetHighestBid("0");
         _auctionService.SetSeconds(0);
         _auctionService.SetHighestBidder("");
         _timer.Enabled = false;
