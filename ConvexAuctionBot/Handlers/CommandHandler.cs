@@ -58,7 +58,7 @@ public class CommandHandler
         
         Console.WriteLine("message is being processed");
         
-        string auctionStatus = _services.GetRequiredService<IAuctionService>().GetStatus() ?? "";
+        string auctionStatus = _auctionService.GetStatus() ?? "";
             
         if (!auctionStatus.Equals("true"))
         {
