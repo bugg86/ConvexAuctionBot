@@ -58,7 +58,7 @@ public class CommandHandler
         
         Console.WriteLine("message is being processed");
         
-        string auctionStatus = _services.GetRequiredService<IAuctionService>().GetStatus() ?? "";
+        string auctionStatus = _auctionService.GetStatus() ?? "";
             
         if (!auctionStatus.Equals("true"))
         {
@@ -72,7 +72,7 @@ public class CommandHandler
             
         int bid = int.Parse(Regex.Match(arg.Content, @"\d+").Value);
             
-        if (bid == 475)
+        if (bid >= 750)
         {
             return;
         }
