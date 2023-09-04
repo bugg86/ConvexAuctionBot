@@ -72,7 +72,7 @@ public class CommandHandler
             
         int bid = int.Parse(Regex.Match(arg.Content, @"\d+").Value);
             
-        if (bid == 475)
+        if (bid >= 475)
         {
             return;
         }
