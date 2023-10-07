@@ -65,14 +65,14 @@ public class CommandHandler
             return;
         }
 
-        if (!arg.Content.Contains("bid"))
+        if (!arg.Content.Contains("bid") && !arg.Content.Contains("Bid"))
         {
             return;
         }
             
         int bid = int.Parse(Regex.Match(arg.Content, @"\d+").Value);
             
-        if (bid >= 750)
+        if (bid > 750)
         {
             return;
         }
