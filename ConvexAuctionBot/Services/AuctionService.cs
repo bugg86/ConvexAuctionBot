@@ -260,7 +260,7 @@ public class AuctionService : IAuctionService
     {
         if (!File.Exists(auctionFile))
         {
-            File.WriteAllText(auctionFile, "{\"status\": \"false\"}");
+            File.WriteAllText(auctionFile, "{}");
         }
         else
         {

@@ -38,6 +38,8 @@ public class Program
             var serviceProvider = services.BuildServiceProvider();
             _client = serviceProvider.GetRequiredService<DiscordSocketClient>();
             _commands = serviceProvider.GetRequiredService<InteractionService>();
+            
+            CreateDbFiles(serviceProvider);
 
             _client.Log += Log;
             _commands.Log += Log;
@@ -83,59 +85,16 @@ public class Program
         Console.WriteLine(msg.ToString());
         return Task.CompletedTask;
     }
-    // private Task HandleMessage(SocketMessage arg, IServiceProvider _services)
-    // {
-    //     // there has to be a better way to do this but i can't be asked finding a better way
-    //     if (arg.Channel.Id == auctionChannelId)
-    //     {
-    //         if (arg.Author.IsBot)
-    //         {
-    //             
-    //         }
-    //         
-    //         string auctionStatus = _services.GetRequiredService<IAuctionService>().GetStatus() ?? "";
-    //         
-    //         if (!auctionStatus.Equals("true"))
-    //         {
-    //             return;
-    //         }
-    //
-    //         if (!arg.Content.Contains("bid"))
-    //         {
-    //             return;
-    //         }
-    //         
-    //         int bid = int.Parse(Regex.Match(arg.Content, @"\d+").Value);
-    //         
-    //         if (bid == 475)
-    //         {
-    //             return;
-    //         }
-    //         //25 is the bid increment
-    //         if (bid % 25 != 0)
-    //         {
-    //             return;
-    //         }
-    //
-    //         KeyValuePair<string, int> captain = _captainService.GetSingleCaptain(arg.Author.Username)!.Value;
-    //         if (captain.Value - bid < 0)
-    //         {
-    //             return;
-    //         }
-    //             
-    //         string currentPlayer = _auctionService.GetCurrentPlayer();
-    //         int currentPrice = _playerService.GetSinglePlayer(currentPlayer).Value.Value;
-    //
-    //         if (bid <= currentPrice)
-    //         {
-    //             return;
-    //         }
-    //         
-    //         _playerService.UpdatePlayer(new KeyValuePair<string, int>(currentPlayer, bid));
-    //
-    //         _captainService.UpdateCaptain(new KeyValuePair<string, int>(captain.Key, captain.Value - bid));
-    //         
-    //         await arg.Channel.SendMessageAsync("New highest bid is: **" + bid + "**");
-    //     }
-    // }
+
+    private static void CreateDbFiles(IServiceProvider serviceProvider)
+    {
+        if (!Directory.Exists("../../../DB"))
+        {
+            Directory.CreateDirectory("../../../DB");
+        }
+        
+        serviceProvider.GetRequiredService<ICaptainService>().GenerateDbFile();
+        serviceProvider.GetRequiredService<IPlayerService>().GenerateDbFile();
+        serviceProvider.GetRequiredService<IAuctionService>().GenerateDbFile();
+    }
 }
