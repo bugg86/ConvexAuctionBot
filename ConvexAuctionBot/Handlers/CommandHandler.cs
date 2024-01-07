@@ -89,7 +89,7 @@ public class CommandHandler
         }
                 
         string currentPlayer = _auctionService.GetCurrentPlayer();
-        int? currentPrice = int.Parse(_auctionService.GetHighestBidder());
+        int? currentPrice = int.Parse(_auctionService.GetHighestBid());
 
         if (bid <= currentPrice)
         {
